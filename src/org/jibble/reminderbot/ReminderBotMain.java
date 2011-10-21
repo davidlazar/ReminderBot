@@ -1,4 +1,4 @@
-/* 
+/*
 Copyright Paul James Mutton, 2001-2004, http://www.jibble.org/
 
 This file is part of ReminderBot.
@@ -20,21 +20,21 @@ import java.util.*;
 import java.io.*;
 
 public class ReminderBotMain {
-    
+
     public static void main(String[] args) throws Exception {
-        
+
         Properties p = new Properties();
         p.load(new FileInputStream(new File("./config.ini")));
-        
+
         String server = p.getProperty("Server", "localhost");
         String channel = p.getProperty("Channel", "#test");
         String nick = p.getProperty("Nick", "ReminderBot");
-        
+
         ReminderBot bot = new ReminderBot(nick);
         bot.setVerbose(true);
         bot.connect(server);
         bot.joinChannel(channel);
-        
+
     }
-    
+
 }

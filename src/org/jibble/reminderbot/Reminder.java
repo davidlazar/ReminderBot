@@ -1,4 +1,4 @@
-/* 
+/*
 Copyright Paul James Mutton, 2001-2004, http://www.jibble.org/
 
 This file is part of ReminderBot.
@@ -19,7 +19,7 @@ package org.jibble.reminderbot;
 import java.io.Serializable;
 
 public class Reminder implements Serializable, Comparable {
-    
+
     public Reminder(String channel, String nick, String message, long setTime, long dueTime) {
         this.channel = channel;
         this.nick = nick;
@@ -27,19 +27,19 @@ public class Reminder implements Serializable, Comparable {
         this.setTime = setTime;
         this.dueTime = dueTime;
     }
-    
+
     public String getChannel() {
         return channel;
     }
-    
+
     public String getNick() {
         return nick;
     }
-    
+
     public String getMessage() {
         return message;
     }
-    
+
     public long getSetTime() {
         return setTime;
     }
@@ -47,7 +47,7 @@ public class Reminder implements Serializable, Comparable {
     public long getDueTime() {
         return dueTime;
     }
-    
+
     public int compareTo(Object o) {
         if (o instanceof Reminder) {
             Reminder other = (Reminder) o;
@@ -60,11 +60,11 @@ public class Reminder implements Serializable, Comparable {
         }
         return 0;
     }
-    
+
     private String channel;
     private String nick;
     private String message;
     private long setTime;
     private long dueTime;
-    
+
 }

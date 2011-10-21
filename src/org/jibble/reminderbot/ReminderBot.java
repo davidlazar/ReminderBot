@@ -1,4 +1,4 @@
-/* 
+/*
 Copyright Paul James Mutton, 2001-2004, http://www.jibble.org/
 
 This file is part of ReminderBot.
@@ -24,7 +24,7 @@ import java.io.*;
 public class ReminderBot extends PircBot implements Runnable {
 
     private static final String REMINDER_FILE = "reminders.dat";
-    
+
     public ReminderBot(String name) {
         loadReminders();
         setName(name);
@@ -32,7 +32,7 @@ public class ReminderBot extends PircBot implements Runnable {
         dispatchThread = new Thread(this);
         dispatchThread.start();
     }
-    
+
     public synchronized void onMessage(String channel, String sender, String login, String hostname, String message) {
 
         Pattern messagePattern = Pattern.compile("^\\s*(?i:(" + getNick() + ")?\\s*[\\:,]?\\s*remind\\s+me\\s+in\\s+(((\\d+\\.?\\d*|\\.\\d+)\\s+(weeks?|days?|hours?|hrs?|minutes?|mins?|seconds?|secs?)[\\s,]*(and)?\\s+)+)(.*)\\s*)$");
@@ -40,10 +40,10 @@ public class ReminderBot extends PircBot implements Runnable {
         if (m.matches()) {
             String reminderMessage = m.group(7);
             String periods = m.group(2);
-            
+
             long set = System.currentTimeMillis();
             long due = set;
-            
+
             try {
                 double weeks = getPeriod(periods, "weeks|week");
                 double days = getPeriod(periods, "days|day");
@@ -56,7 +56,7 @@ public class ReminderBot extends PircBot implements Runnable {
                 sendMessage(channel, sender + ": I can't quite deal with numbers like that!");
                 return;
             }
-            
+
             if (due == set) {
                 sendMessage(channel, "Example of correct usage: \"Remind me in 1 hour, 10 minutes to check the oven.\"  I understand all combinations of weeks, days, hours, minutes and seconds.");
                 return;
@@ -68,7 +68,7 @@ public class ReminderBot extends PircBot implements Runnable {
             dispatchThread.interrupt();
         }
     }
-    
+
     public double getPeriod(String periods, String regex) throws NumberFormatException {
         Pattern pattern = Pattern.compile("^.*?([\\d\\.]+)\\s*(?i:(" + regex + ")).*$");
         Matcher m = pattern.matcher(periods);
@@ -82,7 +82,7 @@ public class ReminderBot extends PircBot implements Runnable {
         }
         return 0;
     }
-    
+
     public synchronized void run() {
         boolean running = true;
         while (running) {
@@ -114,10 +114,10 @@ public class ReminderBot extends PircBot implements Runnable {
                 reminders.removeFirst();
                 saveReminders();
             }
-            
+
         }
     }
-    
+
     private void saveReminders() {
         try {
             ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(new File(REMINDER_FILE)));
@@ -129,7 +129,7 @@ public class ReminderBot extends PircBot implements Runnable {
             // If it doesn't work, no great loss!
         }
     }
-    
+
     private void loadReminders() {
         try {
             ObjectInputStream in = new ObjectInputStream(new FileInputStream(new File(REMINDER_FILE)));
@@ -139,9 +139,9 @@ public class ReminderBot extends PircBot implements Runnable {
         catch (Exception e) {
             // If it doesn't work, no great loss!
         }
-    }    
-    
+    }
+
     private Thread dispatchThread;
     private LinkedList reminders = new LinkedList();
-    
+
 }
