@@ -1,37 +1,44 @@
-<project name="reminderbot" default="dist">
+<project xmlns:ivy="antlib:org.apache.ivy.ant" name="reminderbot" default="jar">
   <description>
     Build ReminderBot
   </description>
 
-  <property name="src" location="src"/>
-  <property name="build" location="build"/>
-  <property name="dist" location="dist"/>
+  <property name="src.dir" location="src"/>
+  <property name="build.dir" location="build"/>
+  <property name="classes.dir" location="${build.dir}/classes"/>
+  <property name="artifacts.dir" location="${build.dir}/artifacts"/>
+  <property name="reports.dir" location="${build.dir}/reports"/>
+  <property name="ivy.lib.dir" location="${build.dir}/lib"/>
 
-  <!-- TODO: put this in build.properties -->
-  <property name="pircbot.jar" location="../pircbot/dist/lib/pircbot.jar"/>
+  <path id="lib.path">
+    <fileset dir="${ivy.lib.dir}"/>
+  </path>
 
-  <target name="build" description="Build ReminderBot">
-    <mkdir dir="${build}"/>
-    <javac fork="true" srcdir="${src}" destdir="${build}">
-      <classpath path="${pircbot.jar}"/>
+  <target name="resolve" description="--> retrieve dependencies with ivy">
+    <ivy:retrieve/>
+  </target>
+
+  <target name="report" depends="resolve" description="--> generate a report of dependencies">
+    <ivy:report todir="${reports.dir}"/>
+  </target>
+
+  <target name="build" depends="resolve" description="--> build ReminderBot">
+    <mkdir dir="${classes.dir}"/>
+    <javac fork="true" srcdir="${src.dir}" destdir="${classes.dir}" classpathref="lib.path">
     </javac>
   </target>
 
-  <target name="dist" depends="build" description="Create ReminderBot distribution">
-    <mkdir dir="${dist}/lib"/>
-    <jar jarfile="${dist}/lib/reminderbot.jar" basedir="${build}"/>
-    <antcall target="launcher"/>
+  <target name="jar" depends="build" description="--> create reminderbot.jar">
+    <mkdir dir="${artifacts.dir}"/>
+    <jar jarfile="${artifacts.dir}/reminderbot.jar" basedir="${classes.dir}"/>
   </target>
 
-  <target name="launcher" description="Create the launcher script that starts ReminderBot">
-    <mkdir dir="${dist}/bin"/>
-    <echo file="${dist}/bin/reminderbot">#!/bin/sh${line.separator}java -cp ${pircbot.jar}:${dist}/lib/reminderbot.jar org.jibble.reminderbot.ReminderBotMain</echo>
-    <chmod file="${dist}/bin/reminderbot" perm="+x"/>
+  <target name="clean" description="--> delete the build directory">
+    <delete dir="${build.dir}"/>
   </target>
 
-  <target name="clean">
-    <delete dir="${build}"/>
-    <delete dir="${dist}"/>
-  </target>
+   <target name="clean-cache" description="--> clean the ivy cache">
+     <ivy:cleancache/>
+   </target>
 
 </project>
