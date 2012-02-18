@@ -23,18 +23,13 @@ public class ReminderBotMain {
 
     public static void main(String[] args) throws Exception {
 
-        Properties p = new Properties();
-        p.load(new FileInputStream(new File("./config.ini")));
+        if (args.length < 1) {
+            System.out.println("Usage: reminderbot <config>");
+            System.exit(1);
+        }
 
-        String server = p.getProperty("Server", "localhost");
-        String channel = p.getProperty("Channel", "#test");
-        String nick = p.getProperty("Nick", "ReminderBot");
-
-        ReminderBot bot = new ReminderBot(nick);
-        bot.setVerbose(true);
-        bot.connect(server);
-        bot.joinChannel(channel);
-
+        ReminderBot bot = new ReminderBot();
+        bot.initBot(args[0]);
     }
 
 }

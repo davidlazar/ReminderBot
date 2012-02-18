@@ -21,13 +21,12 @@ import java.util.*;
 import java.util.regex.*;
 import java.io.*;
 
-public class ReminderBot extends PircBot implements Runnable {
+public class ReminderBot extends ConfigurablePircBot implements Runnable {
 
     private static final String REMINDER_FILE = "reminders.dat";
 
-    public ReminderBot(String name) {
+    public ReminderBot() {
         loadReminders();
-        setName(name);
         setAutoNickChange(true);
         dispatchThread = new Thread(this);
         dispatchThread.start();
