@@ -1,6 +1,6 @@
 # About
 
-ReminderBot' (this project; pronounced "ReminderBot prime") is a fork of the jibble.org [ReminderBot](http://www.jibble.org/reminderbot/). ReminderBot' is based on [PircBot'](https://github.com/davidlazar/PircBot)
+ReminderBot' (this project; pronounced "ReminderBot prime") is a fork of the jibble.org [ReminderBot](http://www.jibble.org/reminderbot/). ReminderBot' is based on [PircBot'](https://github.com/davidlazar/PircBot).
 
 # Usage
 
