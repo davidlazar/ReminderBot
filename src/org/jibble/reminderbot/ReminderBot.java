@@ -109,7 +109,7 @@ public class ReminderBot extends ConfigurablePircBot implements Runnable {
                 }
             }
             else {
-                sendMessage(reminder.getChannel(), reminder.getNick() + ": You asked me to remind you " + reminder.getMessage());
+                sendMessage(reminder.getChannel(), reminder.getNick() + ": On " + new Date(reminder.getSetTime()) + ", you asked me to remind you " + reminder.getMessage());
                 reminders.removeFirst();
                 saveReminders();
             }
