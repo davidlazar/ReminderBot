@@ -140,6 +140,41 @@ public class ReminderBot extends ConfigurablePircBot implements Runnable {
         }
     }
 
+    public synchronized void onDisconnect() {
+        int reconnectDelay = 30; // seconds
+        this.log("*** Disconnected from server.");
+        while (!isConnected()) {
+            try {
+                this.log("*** Attempting to reconnect to server.");
+                reconnect();
+                // rejoin channels, if specified
+                if (this.getConfiguration().containsKey("Channels")) {
+                    joinChannel(this.getConfiguration().getString("Channels"));
+                }
+            }
+            catch (Exception e) {
+                this.log("*** Failed to reconnect to server. Sleeping " + reconnectDelay + " seconds.");
+                try {
+                    Thread.sleep(reconnectDelay * 1000);
+                } catch (Exception ignored) {
+                }
+            }
+        }
+    }
+
+    public synchronized void onKick(String channel, String kickerNick, String kickerLogin,
+      String kickerHostname, String recipientNick, String reason) {
+        int kickDelay = 5; // seconds
+        this.log("*** Kicked from channel: " + channel);
+
+        try {
+            Thread.sleep(kickDelay * 1000);
+        } catch (Exception ignored) {
+        }
+
+        joinChannel(channel);
+    }
+
     private Thread dispatchThread;
     private LinkedList reminders = new LinkedList();
 
