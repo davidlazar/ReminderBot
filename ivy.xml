@@ -1,6 +1,6 @@
 <ivy-module version="2.2">
     <info organisation="org.jibble" module="reminderbot"/>
     <dependencies>
-        <dependency org="org.jibble" name="pircbot" rev="latest.integration"/>
+        <dependency org="org.jibble" name="pircbot" rev="latest.integration" changing="true"/>
     </dependencies>
 </ivy-module>
