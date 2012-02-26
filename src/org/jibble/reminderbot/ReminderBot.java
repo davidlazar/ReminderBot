@@ -142,7 +142,6 @@ public class ReminderBot extends ConfigurablePircBot implements Runnable {
 
     public synchronized void onDisconnect() {
         int reconnectDelay = 30; // seconds
-        this.log("*** Disconnected from server.");
         while (!isConnected()) {
             try {
                 this.log("*** Attempting to reconnect to server.");
