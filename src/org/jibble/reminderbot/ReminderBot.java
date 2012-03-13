@@ -74,8 +74,8 @@ public class ReminderBot extends ConfigurablePircBot implements Runnable {
         m = pattern.matcher(periods);
         if (m.matches()) {
             double d = Double.parseDouble(m.group(1));
-            if (d < 0 || d > 1e6) {
-                throw new NumberFormatException("Number too large or negative (" + d + ")");
+            if (d < 0) {
+                throw new NumberFormatException("Unexpected negative number (" + d + ")");
             }
             return d;
         }
