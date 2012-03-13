@@ -34,7 +34,7 @@ public class ReminderBot extends ConfigurablePircBot implements Runnable {
 
     public synchronized void onMessage(String channel, String sender, String login, String hostname, String message) {
 
-        Pattern messagePattern = Pattern.compile("^\\s*(?i:(" + getNick() + ")?\\s*[\\:,]?\\s*remind\\s+me\\s+in\\s+(((\\d+\\.?\\d*|\\.\\d+)\\s*(weeks?|days?|hours?|hrs?|minutes?|mins?|m|seconds?|secs?|s)[\\s,]*(and)?\\s+)+)(.*)\\s*)$");
+        Pattern messagePattern = Pattern.compile("^\\s*(?i:(" + getNick() + ")?\\s*[\\:,]?\\s*remind\\s+me\\s+in\\s+(((\\d+\\.?\\d*|\\.\\d+)\\s*(years?|y|weeks?|days?|hours?|hrs?|minutes?|mins?|m|seconds?|secs?|s)[\\s,]*(and)?\\s+)+)(.*)\\s*)$");
         Matcher m = messagePattern.matcher(message);
         if (m.matches()) {
             String reminderMessage = m.group(7);
@@ -44,12 +44,13 @@ public class ReminderBot extends ConfigurablePircBot implements Runnable {
             long due = set;
 
             try {
+                double years = getPeriod(periods, "years|year|y"); // Julian year
                 double weeks = getPeriod(periods, "weeks|week");
                 double days = getPeriod(periods, "days|day");
                 double hours = getPeriod(periods, "hours|hrs|hour|hr");
                 double minutes = getPeriod(periods, "minutes|mins|minute|min|m");
                 double seconds = getPeriod(periods, "seconds|secs|second|sec|s");
-                due += (weeks * 604800 + days * 86400 + hours * 3600 + minutes * 60 + seconds) * 1000;
+                due += (years * 31557600 + weeks * 604800 + days * 86400 + hours * 3600 + minutes * 60 + seconds) * 1000;
             }
             catch (NumberFormatException e) {
                 sendMessage(channel, sender + ": I can't quite deal with numbers like that!");
