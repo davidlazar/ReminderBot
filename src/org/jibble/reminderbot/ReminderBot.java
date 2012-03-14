@@ -165,15 +165,18 @@ public class ReminderBot extends ConfigurablePircBot implements Runnable {
 
     public synchronized void onKick(String channel, String kickerNick, String kickerLogin,
       String kickerHostname, String recipientNick, String reason) {
-        int kickDelay = 5; // seconds
-        this.log("*** Kicked from channel: " + channel);
+        if (recipientNick.equalsIgnoreCase(getNick())) {
+            int kickDelay = 5; // seconds
+            this.log("*** Kicked from channel: " + channel);
 
-        try {
-            Thread.sleep(kickDelay * 1000);
-        } catch (Exception ignored) {
+            try {
+                Thread.sleep(kickDelay * 1000);
+            } catch (InterruptedException ie) {
+                // ignored
+            }
+
+            joinChannel(channel);
         }
-
-        joinChannel(channel);
     }
 
     private Thread dispatchThread;
