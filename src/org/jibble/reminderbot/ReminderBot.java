@@ -147,18 +147,19 @@ public class ReminderBot extends ConfigurablePircBot implements Runnable {
             try {
                 this.log("*** Attempting to reconnect to server.");
                 reconnect();
-                // rejoin channels, if specified
-                if (this.getConfiguration().containsKey("Channels")) {
-                    joinChannel(this.getConfiguration().getString("Channels"));
-                }
             }
             catch (Exception e) {
                 this.log("*** Failed to reconnect to server. Sleeping " + reconnectDelay + " seconds.");
                 try {
                     Thread.sleep(reconnectDelay * 1000);
-                } catch (Exception ignored) {
+                } catch (InterruptedException ie) {
+                    // ignored
                 }
             }
+        }
+        // Now that we're connected, rejoin channels, if specified
+        if (this.getConfiguration().containsKey("Channels")) {
+            joinChannel(this.getConfiguration().getString("Channels"));
         }
     }
 
