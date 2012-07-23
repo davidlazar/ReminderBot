@@ -37,8 +37,8 @@
     <delete dir="${build.dir}"/>
   </target>
 
-   <target name="clean-cache" description="--> clean the ivy cache">
-     <ivy:cleancache/>
-   </target>
+  <target name="clean-cache" description="--> clean the ivy cache">
+    <ivy:cleancache/>
+  </target>
 
 </project>
