@@ -31,6 +31,14 @@ public class ReminderBot extends ConfigurablePircBot implements Runnable {
     }
 
     public synchronized void onMessage(String channel, String sender, String login, String hostname, String message) {
+        processMessage(channel, sender, login, hostname, message);
+    }
+
+    public synchronized void onPrivateMessage(String sender, String login, String hostname, String message) {
+        processMessage(sender, sender, login, hostname, message);
+    }
+
+    public synchronized void processMessage(String channel, String sender, String login, String hostname, String message) {
 
         Pattern messagePattern = Pattern.compile("^\\s*(?i:(" + getNick() + ")?\\s*[\\:,]?\\s*remind\\s+me\\s+in\\s+(((\\d+\\.?\\d*|\\.\\d+)\\s*(years?|y|weeks?|w|days?|d|hours?|hrs?|h|minutes?|mins?|m|seconds?|secs?|s)[\\s,]*(and)?\\s+)+)(.*)\\s*)$");
         Matcher m = messagePattern.matcher(message);
